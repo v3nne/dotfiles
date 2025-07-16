@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Sum up current and full energy/charge across all batteries
+sum_now=0
+sum_full=0
+for bat in /sys/class/power_supply/BAT*; do
+  if [[ -f $bat/energy_now ]]; then
+    now=$(<"$bat/energy_now")
+    full=$(<"$bat/energy_full")
+  else
+    now=$(<"$bat/charge_now")
+    full=$(<"$bat/charge_full")
+  fi
+  sum_now=$((sum_now + now))
+  sum_full=$((sum_full + full))
+done
+
+# Compute integer percentage
+pct=$(( sum_now * 100 / sum_full ))
+
+# Choose a battery icon (Nerd Font) by percentage
+if   (( pct >= 95 )); then icon="󰁹"
+elif (( pct >= 90 )); then icon="󰂂"
+elif (( pct >= 80 )); then icon="󰂁"
+elif (( pct >= 70 )); then icon="󰂀"
+elif (( pct >= 60 )); then icon="󰁿"
+elif (( pct >= 50 )); then icon="󰁾"
+elif (( pct >= 40 )); then icon="󰁽"
+elif (( pct >= 30 )); then icon="󰁼"
+elif (( pct >= 20 )); then icon="󰁻"
+elif (( pct >= 10 )); then icon="󰁺"
+else                       icon="󱈸" # empty
+fi
+
+# If charging, prefix with the specified icon 󰂄
+status_file=/sys/class/power_supply/BAT0/status
+if [[ -f $status_file ]] && grep -q Charging "$status_file"; then
+  icon="󱐋"
+fi
+
+# Print icon + percentage
+printf "%s%d%%" "$icon" "$pct"
+

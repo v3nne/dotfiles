@@ -1,0 +1,89 @@
+;;        devices = [ "/dev/input/by-path/platform-i8042-serio-0-event-kbd" ];
+;;        extraDefCfg = "process-unmapped-keys yes";
+
+;; OLD CONFIG ;; 
+
+;;  (defsrc
+;;    caps a s d f j k l ;
+;;  )
+;;  (defvar
+;;    tap-time 180
+;;    hold-time 200
+;;  )
+;;  (defalias
+;;    caps (tap-hold $tap-time $hold-time esc lctl)
+;;    a (tap-hold $tap-time $hold-time a lmet)
+;;    s (tap-hold $tap-time $hold-time s lalt)
+;;    d (tap-hold $tap-time $hold-time d lsft)
+;;    f (tap-hold $tap-time $hold-time f lctl)
+;;    j (tap-hold $tap-time $hold-time j rctl)
+;;    k (tap-hold $tap-time $hold-time k rsft)
+;;    l (tap-hold $tap-time $hold-time l ralt)
+;;    ; (tap-hold $tap-time $hold-time ; rmet)
+;;  )
+
+;;  (deflayer base
+;;    @caps @a @s @d @f @j @k @l @;
+;;  )
+
+
+
+;; NEW CONFIG ;;
+
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defsrc
+  tab  q w e r t y u i o p [ ]
+  caps a s d f g h j k l ; '
+)
+
+(defvar
+  tap-time 170
+  tap-time-slow 190
+  hold-time 190
+  hold-time-slow 210
+)
+
+(defalias
+  ;; HOME ROW ;;
+  caps (tap-hold $tap-time $hold-time esc (layer-while-held hyper))
+  a (tap-hold $tap-time-slow $hold-time-slow a lmet)
+  s (tap-hold $tap-time-slow $hold-time-slow s lalt)
+  d (tap-hold $tap-time $hold-time d lsft)
+  f (tap-hold $tap-time $hold-time f lctl)
+  g g
+  h h
+  j (tap-hold $tap-time $hold-time j rctl)
+  k (tap-hold $tap-time $hold-time k rsft)
+  l (tap-hold $tap-time $hold-time l ralt)
+  ; (tap-hold $tap-time $hold-time ; rmet)
+  ' '
+
+  ;; TOP ROW ;;
+  tab tab
+  q q
+  w w
+  e e
+  r r
+  t t
+  y y
+  u u
+  i i
+  o o
+  p p
+  [ [
+  ] ]
+)
+
+(deflayer base
+  @tab  @q @w @e @r @t @y @u @i @o @p @[ @]
+  @caps @a @s @d @f @g @h @j @k @l @; @'
+)
+
+(deflayer hyper
+  _ _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ home _ _ end _ _
+)
+

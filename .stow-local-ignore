@@ -1,0 +1,31 @@
+### Default ignore list ###
+
+RCS
+.+,v
+
+CVS
+\.\#.+       # CVS conflict files / emacs lock files
+\.cvsignore
+
+\.svn
+_darcs
+\.hg
+
+\.git
+\.gitignore
+\.gitmodules
+
+.+~          # emacs backup files
+\#.*\#       # emacs autosave files
+
+^/README.*
+^/LICENSE.*
+^/COPYING
+
+
+
+### Add your ignore list down below ###
+
+^bootstrap.*$ # bootstrap*
+^run_.*$      # run_*
+^wallpapers$  # wallpapers/

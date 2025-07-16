@@ -1,0 +1,18 @@
+configuration {
+    display-ssh:    "";
+    display-run:    "";
+    display-drun:   "";
+    display-window: "";
+    display-combi:  "";
+    show-icons:     true;
+
+    /* Unbind ctrl+j & ctrl+k */
+    kb-accept-entry: "Return,KP_Enter,Control+m";
+    kb-remove-to-eol: "";
+
+    /* Now bind navigation */
+    kb-row-down:  "Down,Control+j";
+    kb-row-up:    "Up,Control+k";
+}
+
+@theme "~/.config/rofi/gruvbox-material.rasi"

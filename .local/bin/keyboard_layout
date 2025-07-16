@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# get the raw layout code (e.g. “us” or “se”)
+layout=$(xkblayout-state print %s)
+
+# map to your panel’s labels
+case "${layout,,}" in
+  us)  echo EN ;;
+  se)  echo SV ;;
+  *)   echo "${layout^^}" ;;
+esac
+
