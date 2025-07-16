@@ -36,7 +36,7 @@
 
 (defsrc
   tab  q w e r t y u i o p [ ]
-  caps a s d f g h j k l ; '
+  caps a s d f g h j k l ; ' ret
 )
 
 (defvar
@@ -60,6 +60,7 @@
   l (tap-hold $tap-time $hold-time l ralt)
   ; (tap-hold $tap-time $hold-time ; rmet)
   ' '
+  ret (tap-hold $tap-time $hold-time ret rsft)
 
   ;; TOP ROW ;;
   tab tab
@@ -79,7 +80,7 @@
 
 (deflayer base
   @tab  @q @w @e @r @t @y @u @i @o @p @[ @]
-  @caps @a @s @d @f @g @h @j @k @l @; @'
+  @caps @a @s @d @f @g @h @j @k @l @; @' @ret
 )
 
 (deflayer hyper

@@ -24,8 +24,7 @@ _darcs
 
 
 
-### Add your ignore list down below ###
 
-^bootstrap.*$ # bootstrap*
-^run_.*$      # run_*
-^wallpapers$  # wallpapers/
+# ignore everything that starts with underscore in this directory (will still add from child directories)
+^/_[^/]+$     
+

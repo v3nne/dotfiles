@@ -1,16 +1,31 @@
 #!/bin/bash
 set -euo pipefail
 
+CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DIR_NAME="$( basename "$CURRENT_PATH" )"
+PARENT_DIR="$( dirname "$CURRENT_PATH" )"
+
+source "$CURRENT_PATH/_utils.sh"
+
+
+if [ "$PARENT_DIR" != "$HOME" ]; then
+  printf "❌ Parent directory is NOT home\naborting..."
+  exit 1
+fi
+
+
+
+
 cat <<'EOF'
-  
+
     ██   ██ ███████ ██      ██       ██████       █████  ███    ██ ██████      ██     ██ ███████ ██       ██████  ██████  ███    ███ ███████ 
     ██   ██ ██      ██      ██      ██    ██     ██   ██ ████   ██ ██   ██     ██     ██ ██      ██      ██      ██    ██ ████  ████ ██      
     ███████ █████   ██      ██      ██    ██     ███████ ██ ██  ██ ██   ██     ██  █  ██ █████   ██      ██      ██    ██ ██ ████ ██ █████   
     ██   ██ ██      ██      ██      ██    ██     ██   ██ ██  ██ ██ ██   ██     ██ ███ ██ ██      ██      ██      ██    ██ ██  ██  ██ ██      
     ██   ██ ███████ ███████ ███████  ██████      ██   ██ ██   ████ ██████       ███ ███  ███████ ███████  ██████  ██████  ██      ██ ███████ 
-                                                                                                                                         
-                                                                                                                                         
-                                                                                                         
+
+
+
                              `8.`888b           ,8' 8 88888888888  b.             8 b.             8 8 88888888888  
                               `8.`888b         ,8'  8 8888         888o.          8 888o.          8 8 8888         
                                `8.`888b       ,8'   8 8888         Y88888o.       8 Y88888o.       8 8 8888         
@@ -27,39 +42,107 @@ cat <<'EOF'
 EOF
 
 
+#################
+### VARIABLES ###
+################
 
+PACMAN_PACKAGES=(
+### Desktop Environment ###
+  i3-gaps
+  picom
+  feh
 
-YAY_CMD="yay -S --noconfirm --noprogressbar --needed --disable-download-timeout"
+### Dev Tools ###
+  kitty
+  ripgrep
+  zsh
+  fzf
+  tmux
+  fd
+  bat
+  yazi
+  lazygit
+  neovim
+  imagemagick # snacks.image dependency (nvim)
+  tree
 
-$YAY_CMD brave-bin
-$YAY_CMD kanata
-$YAY_CMD git-spice-bin
-$YAY_CMD spotify
-$YAY_CMD tor-browser-bin
-$YAY_CMD google-chrome
+### CLI tools ###
+  btop
+  fastfetch
+  stow
+# tealdeer   # tldr man pages (comes with endeavour)
+  yt-dlp   # YouTube (and other sites) to MP3
+  jq       # json query (parser)
+  yq       # yaml query (parer)
+  ffmpeg   # Complete solution to record, convert and stream audio and video
+  termusic # music player TUI
+  rmpc     # music player TUI (mpd)
+  mpc      # mpd client
+  id3v2    # cli tool for adding meta data to sound tracks
 
+### Other ###
+  mpv
+  vlc
+  obsidian
+  libreoffice
+)
 
+YAY_PACKAGES=(
+  brave-bin
+  kanata
+  git-spice-bin
+  spotify
+  tor-browser-bin
+  google-chrome
+)
 
+INSTALLER_FLAGS="-S --noconfirm --noprogressbar --needed --disable-download-timeout"
 
+##############################################################
 
+print_section "Installing pacman packages"
 
+echo "Updating pacman repository"
+sudo pacman -Syu
+for PACKAGE in "${PACMAN_PACKAGES[@]}"; do
+  try_install_package "sudo pacman $INSTALLER_FLAGS" "$PACKAGE"
+done
 
-sudo pacman -Syu --noconfirm --needed ansible
+##############################################################
 
-# ansible-playbook ~/.bootstrap/setup.yml --ask-become-pass
-ansible-playbook ./bootstrap.yml --ask-become-pass
+print_section "Installing AUR packages"
+for package in "${YAY_PACKAGES[@]}"; do
+  try_install_package "yay $INSTALLER_FLAGS" "$PACKAGE"
+done
 
+##############################################################
 
+print_section "Stowing dotfiles"
 
+missing_software_guard "stow"
 
-printf "\n\n === Bootstrapping ZSH ===\n\n"
+stow_dotfiles
+
+##############################################################
+
+print_section "Bootstrapping ZSH"
+
+missing_software_guard "zsh"
+
+printf "Change login shell"
+zsh_path=$(which zsh)
+echo "$zsh_path" | sudo tee -a /etc/shells
+chsh -s "$zsh_path"
 ./bootstrap_zsh.sh
 
+##############################################################
 
-printf "\n\n === other stuff ===\n\n"
-# Install tmux plugins
+print_section "Fixing miscellaneous stuff"
+
+echo "Install tmux plugins"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 "$HOME"/.tmux/plugins/tpm/scripts/install_plugins.sh
 
+echo "Updating tealdeer cache"
 tldr --update
 
