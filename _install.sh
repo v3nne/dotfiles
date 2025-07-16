@@ -96,7 +96,13 @@ YAY_PACKAGES=(
   google-chrome
 )
 
-INSTALLER_FLAGS="-S --noconfirm --noprogressbar --needed --disable-download-timeout"
+INSTALLER_FLAGS=(
+  -S
+  --noconfirm
+  --noprogressbar
+  --needed
+  --disable-download-timeout
+)
 
 ##############################################################
 
@@ -105,14 +111,15 @@ print_section "Installing pacman packages"
 echo "Updating pacman repository"
 sudo pacman -Syu
 for PACKAGE in "${PACMAN_PACKAGES[@]}"; do
-  try_install_package "sudo" "pacman" "$INSTALLER_FLAGS" "$PACKAGE"
+  try_install_package sudo pacman "${INSTALLER_FLAGS[@]}" "$PACKAGE"
+
 done
 
 ##############################################################
 
 print_section "Installing AUR packages"
 for package in "${YAY_PACKAGES[@]}"; do
-  try_install_package "yay" "$INSTALLER_FLAGS" "$PACKAGE"
+  try_install_package yay "${INSTALLER_FLAGS[@]}" "$PACKAGE"
 done
 
 ##############################################################
