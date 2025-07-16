@@ -21,19 +21,19 @@ function print_section() {
 
 
 function try_install_package() {
-  local INSTALL_CMD=$1 PACKAGE=$2
+  local -a INSTALL_CMD=( "$@" )    # collect *all* positional args into an array
+  local PACKAGE=${INSTALL_CMD[-1]} # the last element
+  unset 'INSTALL_CMD[-1]'          # remove it from the array, so INSTALL_CMD now holds just the command+flags
 
   # run the command, run if statement if it returns non 0 exit code
-  if ! OUTPUT=$("$INSTALL_CMD" "$PACKAGE" 2>&1); then
+  if ! OUTPUT=$("${INSTALL_CMD[@]}" "$PACKAGE" 2>&1); then
     cat <<-EOF
 
-    #####  FAILED TO INSTALL PACKAGE: ${PACKAGE} #####
-
+    FAILED TO INSTALL PACKAGE: ${PACKAGE}
     You can check the logs in "${LOG_FILE_PATH}"
-
 EOF
 
-    write_to_log "[ERROR] '$INSTALL_CMD $PACKAGE' failed: $OUTPUT"
+    write_to_log "[ERROR] '${INSTALL_CMD[*]} $PACKAGE' failed: $OUTPUT"
   fi
 }
 
