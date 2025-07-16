@@ -44,7 +44,7 @@ EOF
 
 #################
 ### VARIABLES ###
-################
+#################
 
 PACMAN_PACKAGES=(
 ### Desktop Environment ###
@@ -133,7 +133,13 @@ printf "Change login shell"
 zsh_path=$(which zsh)
 echo "$zsh_path" | sudo tee -a /etc/shells
 chsh -s "$zsh_path"
-./bootstrap_zsh.sh
+./_bootstrap_zsh.sh
+
+##############################################################
+
+print_section "Setting up services"
+
+./_services.sh
 
 ##############################################################
 
@@ -146,3 +152,8 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 echo "Updating tealdeer cache"
 tldr --update
 
+echo "Installing NVM"
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+echo "Installing Bun"
+curl -fsSL https://bun.sh/install | bash

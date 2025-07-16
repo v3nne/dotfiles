@@ -26,7 +26,10 @@ else
 fi
 
 
-install_custom_plugin "https://github.com/v3nne/vennes-sorin.zsh-theme.git"
+git clone \
+  "https://github.com/v3nne/vennes-sorin.zsh-theme.git" \
+  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/vennes-sorin.zsh-theme"
+
 install_custom_plugin "https://github.com/MichaelAquilina/zsh-you-should-use.git"
 install_custom_plugin "https://github.com/zsh-users/zsh-autosuggestions.git"
 install_custom_plugin "https://github.com/zsh-users/zsh-syntax-highlighting.git"
