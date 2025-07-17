@@ -1,9 +1,5 @@
 #!/bin/bash
 
-##################
-##### KANATA #####
-##################
-
 # Give your user access to the uinput subsystem
 sudo groupadd uinput                 # only if the group doesn't already exist  
 sudo usermod -aG input,uinput "$USER"  # add yourself to both groups  
@@ -26,6 +22,3 @@ systemctl --user daemon-reload
 systemctl --user enable --now kanata.service
 
 
-#####################
-##### SOMETHING #####
-#####################

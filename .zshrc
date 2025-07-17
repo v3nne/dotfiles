@@ -116,6 +116,7 @@ mdc() {
 
 alias vim="nvim"
 alias cl="clear"
+alias se="sudoedit"
 
 
 export NVM_DIR="$HOME/.config/nvm"
