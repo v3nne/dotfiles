@@ -64,6 +64,9 @@ ZSH_THEME="vennes-sorin"
 plugins=(
   git
   history-substring-search
+  zsh-you-should-use
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh

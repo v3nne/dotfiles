@@ -26,9 +26,15 @@ else
 fi
 
 
-git clone \
-  "https://github.com/v3nne/vennes-sorin.zsh-theme.git" \
-  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/vennes-sorin.zsh-theme"
+# Ensure the custom themes folder exists
+ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
+mkdir -p "$ZSH_CUSTOM/themes"
+
+# Download the raw theme file directly
+curl -fsSL \
+  https://raw.githubusercontent.com/v3nne/vennes-sorin.zsh-theme/master/vennes-sorin.zsh-theme \
+  -o "$ZSH_CUSTOM/themes/vennes-sorin.zsh-theme"
+
 
 install_custom_plugin "https://github.com/MichaelAquilina/zsh-you-should-use.git"
 install_custom_plugin "https://github.com/zsh-users/zsh-autosuggestions.git"
