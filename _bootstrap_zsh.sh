@@ -20,12 +20,13 @@ install_custom_plugin() {
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
 	echo "Getting oh-my-zsh"
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
-    --unattended --keep-zshrc --skip-chsh
+    "" --unattended --keep-zshrc --skip-chsh
 else
 	echo ".oh-my-zsh already found, skipping."
 fi
 
 
+### pretty sure this fails cause ZSH_CUSTOM isn't in the path ###
 # Ensure the custom themes folder exists
 ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
 mkdir -p "$ZSH_CUSTOM/themes"

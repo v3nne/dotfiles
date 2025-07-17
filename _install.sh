@@ -51,6 +51,12 @@ PACMAN_PACKAGES=(
   i3-gaps
   picom
   feh
+  rofi
+  # power management stuff #
+  tlp
+  tlp-rdw
+  acpi_call
+  powertop
 
 ### Dev Tools ###
   kitty
@@ -85,6 +91,18 @@ PACMAN_PACKAGES=(
   vlc
   obsidian
   libreoffice
+  bluez
+  chromium
+
+### Dependencies for building shit ###
+  inkscape
+  xorg-xcursorgen
+  libxcursor
+  libx11
+  libpng
+  gcc
+  make
+  bc
 )
 
 YAY_PACKAGES=(
@@ -94,6 +112,13 @@ YAY_PACKAGES=(
   spotify
   tor-browser-bin
   google-chrome
+  ttf-jetbrains-mono-nerd
+  xfce4-i3-workspaces-plugin
+  gruvbox-material-gtk-theme-git
+  gruvbox-dark-icons-gtk
+
+### Dependencies for building shit ###
+  python-clickgen1
 )
 
 INSTALLER_FLAGS=(
@@ -103,6 +128,12 @@ INSTALLER_FLAGS=(
   --needed
   --disable-download-timeout
 )
+
+##############################################################
+
+print_section "Uninstalling potentially conflicting packages"
+
+sudo pacman -R --noconfirm power-profiles-daemon
 
 ##############################################################
 
@@ -118,15 +149,20 @@ done
 ##############################################################
 
 print_section "Installing AUR packages"
-for package in "${YAY_PACKAGES[@]}"; do
+for PACKAGE in "${YAY_PACKAGES[@]}"; do
   try_install_package yay "${INSTALLER_FLAGS[@]}" "$PACKAGE"
 done
+
+
 
 ##############################################################
 
 print_section "Stowing dotfiles"
 
 missing_software_guard "stow"
+
+echo "Making sure stow doesn't symlink ~/.icons"
+mkdir -p "$HOME/.icons"
 
 if stow -n -v .; then
   write_to_log "[INFO] stowed: $(stow -n -v .)"
@@ -152,6 +188,8 @@ chsh -s "$zsh_path"
 
 print_section "Setting up services"
 
+sudo systemctl enable --now bluetooth.service
+sudo systemctl enable --now tlp
 ./_services.sh
 
 ##############################################################
@@ -170,4 +208,20 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 
 echo "Installing Bun"
 curl -fsSL https://bun.sh/install | bash
+
+echo "Applying cursor styles"
+xfconf-query -c xsettings -p /Gtk/CursorThemeName -s "Capitaine_Gruvbox_Light" # might be spaces instead of underscores
+xfconf-query -c xsettings -p /Gtk/CursorThemeSize -s 32
+
+##############################################################
+
+print_section "Building packages from source"
+
+AUR_PATH="$HOME/repos/AUR"
+mkdir -p "$AUR_PATH"
+
+
+echo "Cloning & building "
+git clone "https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme.git" "$AUR_PATH"
+cd "$AUR_PATH/Gruvbox-GTK-Theme/themes" && ./build.sh && ./install.sh
 
