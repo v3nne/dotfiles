@@ -50,24 +50,24 @@ function missing_software_guard() {
 
 
 # ( ) instead of { } starts a subshell, so the globs live & die in this function
-function stow_dotfiles() (
-  shopt -s nullglob dotglob
-
-  # Loop through items in current directory
-  for ENTRY in *; do
-    case "$ENTRY" in
-      _*|.git|.gitignore|README.md|.stow-local-ignore)
-        # matched one of the ignore‑patterns → do nothing
-        ;;
-      *)
-        if stow -n -v "$ENTRY"; then
-          stow "$ENTRY" >>"$LOG_FILE_PATH" 2>&1
-          write_to_log "[INFO] stowed '$ENTRY'"
-        else
-          write_to_log "[WARNING] stow conflict detected for '$ENTRY' - skipping..."
-        fi
-        ;;
-    esac
-  done
-)
+# function stow_dotfiles() (
+#   shopt -s nullglob dotglob
+#
+#   # Loop through items in current directory
+#   for ENTRY in *; do
+#     case "$ENTRY" in
+#       _*|.git|.gitignore|README.md|.stow-local-ignore)
+#         # matched one of the ignore‑patterns → do nothing
+#         ;;
+#       *)
+#         if stow -n -v "$ENTRY"; then
+#           stow "$ENTRY" >>"$LOG_FILE_PATH" 2>&1
+#           write_to_log "[INFO] stowed '$ENTRY'"
+#         else
+#           write_to_log "[WARNING] stow conflict detected for '$ENTRY' - skipping..."
+#         fi
+#         ;;
+#     esac
+#   done
+# )
 

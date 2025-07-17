@@ -128,7 +128,13 @@ print_section "Stowing dotfiles"
 
 missing_software_guard "stow"
 
-stow_dotfiles
+if stow -n -v .; then
+  write_to_log "[INFO] stowed: $(stow -n -v .)"
+  stow . >>"$LOG_FILE_PATH" 2>&1
+else
+  write_to_log "[ERROR] stow conflict detected. Aborting..."
+  exit 1
+fi
 
 ##############################################################
 
