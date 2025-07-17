@@ -85,6 +85,6 @@
 
 (deflayer hyper
   _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _ home _ _ end _ _
+  _ _ _ _ _ _ home _ _ end _ _ _
 )
 
