@@ -1,0 +1,10 @@
+git:
+  diffRenderers:
+    - colorArg: always
+      command: delta --paging=never
+gui:
+  border: 'single'
+keybinding:
+  universal:
+    quit: '<esc>'
+    quit-alt1: 'q'

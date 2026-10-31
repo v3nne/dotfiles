@@ -1,0 +1,80 @@
+# ── oh-my-zsh ─────────────────────────────────────────────────────────────────
+
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME=""
+CASE_SENSITIVE="true"
+
+plugins=(
+  git
+  history-substring-search
+  zsh-you-should-use
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
+
+source $ZSH/oh-my-zsh.sh
+source "$HOME/.config/zsh/vennes-sorin.zsh-theme"
+
+# ── Environment ───────────────────────────────────────────────────────────────
+
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/kanagawa-paper-ink.rc"
+export CLAUDE_CODE_TMUX_TRUECOLOR=1
+
+
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+
+# ── Functions ─────────────────────────────────────────────────────────────────
+
+mdc() {
+  mkdir -p -- "$1" && cd -- "$1"
+}
+
+pwd() {
+  if [[ $# -eq 0 ]]; then
+    builtin pwd
+  else
+    printf '%s/%s\n' "$PWD" "$1"
+  fi
+}
+
+comp() {
+  clang -std=c11 -Wall -Wextra -Werror -g "$1" -o "$2"
+}
+
+# ── Aliases ───────────────────────────────────────────────────────────────────
+
+alias dot="chezmoi"
+alias dota="chezmoi apply && exec zsh"
+alias dote="chezmoi edit"
+
+alias vim="nvim"
+alias se="sudoedit"
+alias rmd="rm -I -rf"
+alias lg="lazygit"
+alias ld="lazydocker"
+
+alias cl="claude --permission-mode auto --model opus"
+alias ch="claude --model haiku"
+alias chp="claude --model haiku --print"
+
+#alias nvim="/Users/venne/Documents/nvim-macos-arm64/bin/nvim"
+alias alert="afplay /System/Library/Sounds/Ping.aiff"
+alias psql="docker exec -it postgres psql -U postgres --dbname=realtime_stocks_chart"
+alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+
+# Keep the cursor as a bar (don't let programs leave it as a block)
+autoload -Uz add-zsh-hook
+precmd() { printf '\e[6 q' }
+
+# nvm (loads only if installed)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"

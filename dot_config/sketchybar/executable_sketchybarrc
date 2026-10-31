@@ -1,0 +1,175 @@
+#!/bin/bash
+# This is a demo config to showcase some of the most important commands.
+# It is meant to be changed and configured, as it is intentionally kept sparse.
+# For a (much) more advanced configuration example see my dotfiles:
+# https://github.com/FelixKratz/dotfiles
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+# Shared theme palette (window-list colors + devbox badge accent), the single
+# source of truth also sourced by the tmux plugins. See plugins/palette.sh.
+# shellcheck source=plugins/palette.sh
+. "$PLUGIN_DIR/palette.sh"
+
+# Reset the tmux render state on (re)load so both window lists rebuild from
+# scratch -- a reload never leaves a wedged or stale window list (local or
+# remote) behind. The LOCAL section persists only its render cache; the REMOTE
+# section persists more, and ALL of it must be cleared to give the remote section
+# the same clean-reload guarantee. What each path is, and what staleness it would
+# cause if left behind:
+#   - *.cache      render caches (local + remote): without these a stale cache
+#                  could short-circuit the first rebuild's reconciliation
+#   - rtmux.state  the offline state machine's prev_state/fail_count -- stale, it
+#                  could resume the grace machine mid-failure (e.g. straight into
+#                  `unreachable`) instead of a clean start
+#   - rtmux.connected  the "a real remote list was drawn" marker -- stale, the
+#                  first post-reload `stale` tick would hold a list that no longer
+#                  exists on the freshly-loaded bar
+#   - *.lock / ctl.lock  the mkdir-mutex dirs: a process killed mid-render during
+#                  the reload can leave one behind, wedging the first render for
+#                  up to its stale-break window (5s for the render locks, 15s for
+#                  the controller's ctl.lock)
+# The fresh sketchybar process starts with an empty item set, so the tmux.rwin.*
+# items themselves are gone on reload; clearing the state above is what keeps the
+# rebuilt section from going stale or wedged.
+#
+# This list must stay in sync with the remote state files focus.sh actually
+# writes (its R* declarations: RCACHE/RSTATE/RCONNECTED/RLOCK/RCTLLOCK). A new
+# remote state file added there but forgotten here reopens the stale-state bug.
+CACHE="$HOME/.cache/sketchybar_"
+rm -rf \
+  "${CACHE}tmux.cache" \
+  "${CACHE}tmux.lock" \
+  "${CACHE}rtmux.cache" \
+  "${CACHE}rtmux.state" \
+  "${CACHE}rtmux.connected" \
+  "${CACHE}rtmux.lock" \
+  "${CACHE}rtmux.ctl.lock"
+
+##### Bar Appearance #####
+# Configuring the general appearance of the bar.
+# These are only some of the options available. For all options see:
+# https://felixkratz.github.io/SketchyBar/config/bar
+# If you are looking for other colors, see the color picker:
+# https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
+
+# MacOS renders sketchybar through another renderer pipeline
+# which results in slightly different color
+# technically is the correct background color 0xff1F1F28
+sketchybar --bar \
+  position=top \
+  height=34 \
+  color=0xff202028 \
+  blur_radius=0 \
+  shadow=off \
+  border_width=0 \
+  corner_radius=0 \
+  margin=0
+
+##### Changing Defaults #####
+# We now change some default values, which are applied to all further items.
+# For a full list of all available item properties see:
+# https://felixkratz.github.io/SketchyBar/config/items
+
+default=(
+  padding_left=0
+  padding_right=5
+  icon.font="JetBrainsMono Nerd Font:Regular:14.0"
+  label.font="JetBrainsMono Nerd Font Mono:Regular:14.0"
+  icon.color=0xffB4B09B
+  label.color=0xffB4B09B
+  icon.padding_left=4
+  icon.padding_right=4
+  label.padding_left=4
+  label.padding_right=4
+)
+sketchybar --default "${default[@]}"
+
+##### Adding Mission Control Space Indicators #####
+# Let's add some mission control spaces:
+# https://felixkratz.github.io/SketchyBar/config/components#space----associate-mission-control-spaces-with-an-item
+# to indicate active and available mission control spaces.
+
+# SPACE_ICONS=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10")
+# for i in "${!SPACE_ICONS[@]}"; do
+#   sid="$(($i + 1))"
+#   space=(
+#     space="$sid"
+#     icon="${SPACE_ICONS[i]}"
+#     icon.padding_left=7
+#     icon.padding_right=7
+#     background.color=0x40ffffff
+#     background.corner_radius=5
+#     background.height=25
+#     label.drawing=off
+#     script="$PLUGIN_DIR/space.sh"
+#     click_script="yabai -m space --focus $sid"
+#   )
+#   sketchybar --add space space."$sid" left --set space."$sid" "${space[@]}"
+# done
+
+sketchybar --add event tmux_update
+sketchybar --add event aerospace_workspace_change
+sketchybar --add event ghostty_focus
+
+
+##### Adding Left Items #####
+# We add some regular items to the left side of the bar, where
+# only the properties deviating from the current defaults need to be set
+
+# Focus controller: the single authority over which tmux context the bar draws.
+# Runs on ghostty_focus (AeroSpace focus change) and front_app_switched for
+# snappy switches, plus a ~1s safety tick (tmux is entered manually, so the
+# title marker can appear with no focus change). It governs visibility of the
+# local tmux.win.* items and tmux_session; front_app.sh / tmux.sh defer to it.
+# Has no visual presence of its own (drawing=off).
+sketchybar --add item focus left \
+  --set focus drawing=off update_freq=1 script="$PLUGIN_DIR/focus.sh" \
+  --subscribe focus ghostty_focus front_app_switched
+
+sketchybar --add item front_app left \
+  --set front_app icon.drawing=off script="$PLUGIN_DIR/front_app.sh" \
+  --subscribe front_app front_app_switched \
+  --add item tmux left \
+  --set tmux icon.drawing=off padding_left=0 label.padding_left=0 script="$PLUGIN_DIR/tmux.sh" drawing=off \
+  --subscribe tmux tmux_update
+
+##### Adding Right Items #####
+# In the same way as the left items we can add items to the right side.
+# Additional position (e.g. center) are available, see:
+# https://felixkratz.github.io/SketchyBar/config/items#adding-items-to-sketchybar
+
+# Some items refresh on a fixed cycle, e.g. the clock runs its script once
+# every 10s. Other items respond to events they subscribe to, e.g. the
+# volume.sh script is only executed once an actual change in system audio
+# volume is registered. More info about the event system can be found here:
+# https://felixkratz.github.io/SketchyBar/config/events
+
+sketchybar --add item clock right \
+  --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
+  --add item volume right \
+  --set volume script="$PLUGIN_DIR/volume.sh" \
+  --subscribe volume volume_change \
+  --add item battery right \
+  --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
+  --subscribe battery system_woke power_source_change \
+  --add item layout right \
+  --set layout update_freq=4 script="$PLUGIN_DIR/keyboard_layout.sh" \
+  --add item aerospace right \
+  --set aerospace script="$PLUGIN_DIR/aerospace.sh" width=35 \
+  --subscribe aerospace aerospace_workspace_change \
+  --add item tmux_session right \
+  --set tmux_session icon.drawing=off script="$PLUGIN_DIR/tmux_session.sh" drawing=off \
+  --subscribe tmux_session tmux_update \
+  --add item tmux_rsession right \
+  --set tmux_rsession icon.drawing=off drawing=off \
+  --add item devbox_badge right \
+  --set devbox_badge icon.drawing=off label="devbox" \
+    label.color="$BADGE_FG" background.color="$BADGE_BG" background.height=18 \
+    background.corner_radius=4 background.drawing=on drawing=off \
+  --add item devbox_unreachable right \
+  --set devbox_unreachable icon.drawing=off label="devbox ⚠ unreachable" \
+    label.color="$UNREACHABLE_FG" drawing=off \
+
+##### Force all scripts to run the first time (never do this in a script) #####
+sketchybar --update

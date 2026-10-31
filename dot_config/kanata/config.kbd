@@ -1,0 +1,144 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defsrc
+  esc   f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv   1    2    3    4    5    6    7    8    9    0    -    =   bspc
+  tab   q    w    e    r    t    y    u    i    o    p    [    ]   \
+  caps  a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft  z    x    c    v    b    n    m    ,    .    /    rsft
+  fn    lctl lalt lmet spc  rmet ralt  right
+)
+
+(defvar
+  tt 170
+  tt-slow 190
+  tt-fast 155
+
+  ht 190
+  ht-slow 210
+  ht-fast 175
+)
+
+(defalias
+  esc (tap-hold $tt $ht esc lsft)
+  a (tap-hold $tt $ht a lsft)
+  s (tap-hold $tt-slow $ht-slow s lalt)
+  d (tap-hold $tt $ht d lmet)
+  f (tap-hold $tt $ht f lctl)
+  j (tap-hold $tt $ht j rctl)
+  k (tap-hold $tt $ht k rmet)
+  l (tap-hold $tt $ht l ralt)
+  ; (tap-hold $tt-fast $ht-fast ; rsft)
+  apo (tap-hold $tt $ht ' rsft)
+
+  naV (tap-hold $tt-slow $ht-slow v (layer-while-held nav))
+  Nav (tap-hold $tt-slow $ht-slow n (layer-while-held nav))
+
+  fn (tap-hold 200 200 fn (layer-toggle fn))
+  bspc (tap-hold 0 $ht bspc (layer-while-held num))
+  spc (tap-hold 0 $ht spc (layer-while-held sym))
+
+
+  ;; nav layer stuff ;;
+  ws0 S-A-C-0 ;; Shift+Opt+Ctrl+0
+  ws1 S-A-C-1
+  ws2 S-A-C-2
+  ws3 S-A-C-3
+  ws4 S-A-C-4
+  ws5 (tap-hold $tt $ht S-A-C-5 lsft)
+  ws6 (tap-hold $tt $ht S-A-C-6 lalt)
+  ws7 (tap-hold $tt $ht S-A-C-7 lmet)
+  ws8 (tap-hold $tt $ht S-A-C-8 lctl)
+  ws9 S-A-C-9
+  ws10 S-A-C-f10
+  ws11 S-A-C-f11
+  ws12 S-A-C-f12
+  wispr A-C-fn
+
+  down (tap-hold $tt $ht down rctl)
+  up (tap-hold $tt $ht up rmet)
+  right (tap-hold $tt $ht right ralt)
+  pws C-M-tab ;; left/right shift -> cmd+ctrl+tab (prev workspace)
+
+  ;; num/sym layer home row ;;
+  grave (tap-hold $tt $ht grave lsft)
+  tilde (tap-hold $tt $ht S-grave lsft)
+
+  bslsh (tap-hold $tt $ht \ lalt)
+  pipe (tap-hold $tt $ht S-\ lalt)
+
+  dash (tap-hold $tt $ht - lmet)
+  udash (tap-hold $tt $ht S-- lmet)
+
+  equal (tap-hold $tt $ht = lctl)
+  plus (tap-hold $tt $ht S-= lctl)
+
+  chevl (tap-hold $tt $ht S-, rctl)
+  parl (tap-hold $tt $ht S-9 rctl)
+
+  chevr (tap-hold $tt $ht S-. rmet)
+  parr (tap-hold $tt $ht S-0 rmet)
+
+  brckl (tap-hold $tt $ht [ lalt)
+  crlyl (tap-hold $tt $ht S-[ lalt)
+
+  brckr (tap-hold $tt $ht ] lsft)
+  crlyr (tap-hold $tt $ht S-] lsft)
+)
+
+(deflayer base
+  @wispr brdn brup _ _ _ _ prev pp next mute vold volu
+  tab q w e r t _ _ _ y u i o p
+  esc @a @s @d @f g _ _ h @j @k @l @; @apo
+  esc   z x c @naV b _ _ @Nav m , . /
+  @pws _ _ _ _ _ _ _ _ _ _ @pws
+  @fn _ _ _ @bspc @spc _ _
+)
+
+(deflayer num
+   _ brdn brup _ _ _ _ prev pp next mute vold volu
+  tab 1 2 3 4 5 _ _ _ 6 7 8 9 0
+  @esc @grave @bslsh @dash @equal home _ _ end @chevl @chevr @brckl @brckr @apo
+  _   z x c v b _ _ n m , . /
+  _ _ _ _ _ _ _ _ _ _ _ _
+  @fn _ _ _ @bspc spc _ _
+)
+
+(deflayer sym
+  _ brdn brup _ _ _ _ prev pp next mute vold volu
+  tab S-1 S-2 S-3 S-4 S-5 _ _ _ S-6 S-7 S-8 S-9 S-0
+  @esc @tilde @pipe @udash @plus home _ _ end @parl @parr @crlyl @crlyr @apo
+  _   z x c v b _ _ n m , . /
+  _ _ _ _ _ _ _ _ _ _ _ _
+  @fn _ _ _ ret @spc _ _
+)
+
+(deflayer nav
+  _ brdn brup _ _ _ _ prev pp next mute vold volu
+  @ws0 @ws1 @ws2 @ws3 @ws4 t _ _ _ y u i o del
+  @esc @ws5 @ws6 @ws7 @ws8 g _ _ left @down @up @right @; @apo
+  _   @ws9 @ws10 @ws11 @ws12 b _ _ n m , . /
+  _ _ _ _ _ _ _ _ _ _ _ _
+  @fn _ _ _ @bspc @spc _ _
+)
+
+(deflayer fn
+  _ f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
+  _ _ _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _ _ _
+  fn _ _ _ _ _ _ _
+)
+
+;;  (deflayer base
+;;    _ brdn brup _ _ _ _ prev pp next mute vold volu
+;;    tab q w e r t _ _ _ y u i o p
+;;    esc a s d f g _ _ h j k l ; '
+;;    _   z x c v b _ _ n m , . /
+;;    _ _ _ _ _ _ _ _ _ _ _ _
+;;    fn _ _ _ bspc spc _
+;;  )
+

@@ -1,0 +1,19 @@
+#!/bin/bash
+# com.jtroo.kanata.plist hash: {{ include "dot_config/kanata/launchd/com.jtroo.kanata.plist" | sha256sum }}
+# org.pqrs.karabiner-vhid-daemon.plist hash: {{ include "dot_config/kanata/launchd/org.pqrs.karabiner-vhid-daemon.plist" | sha256sum }}
+set -euo pipefail
+
+src="$HOME/.config/kanata/launchd"
+
+for plist in org.pqrs.karabiner-vhid-daemon.plist com.jtroo.kanata.plist; do
+  dest="/Library/LaunchDaemons/$plist"
+  label="${plist%.plist}"
+
+  if cmp -s "$src/$plist" "$dest"; then
+    continue
+  fi
+
+  sudo launchctl bootout "system/$label" 2>/dev/null || true
+  sudo install -o root -g wheel -m 644 "$src/$plist" "$dest"
+  sudo launchctl bootstrap system "$dest"
+done

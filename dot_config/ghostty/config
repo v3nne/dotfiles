@@ -1,0 +1,35 @@
+theme = dark:kanagawa-paper-ink,light:kanagawa-paper-canvas
+#background = 1F1F28
+
+
+font-family = JetBrainsMono Nerd Font Mono
+font-size = 15.5
+
+
+window-decoration = none
+macos-window-shadow = false
+mouse-hide-while-typing = true
+
+
+cursor-style = bar
+cursor-style-blink = false
+shell-integration-features = no-cursor
+adjust-cursor-thickness = 2
+
+
+keybind = shift+enter=text:\x1b\r
+
+# Treat Option as Alt/Meta so tmux M-* bindings work
+macos-option-as-alt = true
+
+# keybind = alt+h=goto_split:left
+# keybind = alt+j=goto_split:bottom
+# keybind = alt+k=goto_split:top
+# keybind = alt+l=goto_split:right
+#
+# keybind = alt+s=new_split:down
+# keybind = alt+v=new_split:right
+# keybind = alt+q=close_surface
+
+# custom-shader = ~/.config/ghostty/shaders/cursor_blaze.glsl
+# custom-shader-animation = true

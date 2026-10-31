@@ -1,0 +1,30 @@
+Brewfile
+README.md
+CHECKLIST.md
+
+# macOS metadata
+**/._*
+**/.DS_Store
+
+# Never manage private keys or SSH config
+.ssh
+.ssh/**
+**/*.pem
+
+# Generated or third-party
+.config/cagent
+.config/cagent/**
+.config/gh
+.config/gh/**
+.config/tmux/plugins/*
+!.config/tmux/plugins/tpm
+.config/chezmoi
+.config/chezmoi/**
+.zshrc.bak
+
+# Retired files
+.config/notes
+.config/tmux/tmux.conf.templ
+.config/nvim/create_nvim-pack-lock.json
+.config/kanata/*.bak
+.config/kanata/old_config.kbd
