@@ -28,3 +28,26 @@ CHECKLIST.md
 .config/nvim/create_nvim-pack-lock.json
 .config/kanata/*.bak
 .config/kanata/old_config.kbd
+
+# Scripts stay directly in .chezmoiscripts and are ignored by name. chezmoi sorts
+# by full path, so a subfolder would run after 10 and 20, and moving a script
+# makes it rerun.
+{{ if eq .chezmoi.os "darwin" }}
+# Fedora only
+.chezmoiscripts/05-dnf-packages.sh
+.chezmoiscripts/06-docker.sh
+.chezmoiscripts/07-tailscale.sh
+{{ else }}
+# Mac only
+.chezmoiscripts/50-macos-defaults.sh
+.chezmoiscripts/60-kanata-daemons.sh
+.config/aerospace
+.config/aerospace/**
+.config/ghostty
+.config/ghostty/**
+.config/kanata
+.config/kanata/**
+.config/sketchybar
+.config/sketchybar/**
+.config/tmux/tmux-status-theme.sh
+{{ end }}

@@ -23,11 +23,7 @@ export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/kanagawa-paper-ink.rc"
 export CLAUDE_CODE_TMUX_TRUECOLOR=1
 
 
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
+export EDITOR='nvim'
 
 # ── Functions ─────────────────────────────────────────────────────────────────
 
@@ -46,12 +42,20 @@ pwd() {
 comp() {
   clang -std=c11 -Wall -Wextra -Werror -g "$1" -o "$2"
 }
+{{- if eq .chezmoi.os "darwin" }}
+
+# Login shell, because tmux is in Homebrew's folder, which plain ssh doesn't have on PATH
+dev() {
+  ssh -t devbox 'zsh -lc "tmux new-session -A -s main"'
+}
+{{- end }}
 
 # ── Aliases ───────────────────────────────────────────────────────────────────
 
 alias dot="chezmoi"
 alias dota="chezmoi apply && exec zsh"
 alias dote="chezmoi edit"
+alias dotu="chezmoi update && exec zsh"
 
 alias vim="nvim"
 alias se="sudoedit"
@@ -64,9 +68,13 @@ alias ch="claude --model haiku"
 alias chp="claude --model haiku --print"
 
 #alias nvim="/Users/venne/Documents/nvim-macos-arm64/bin/nvim"
+{{- if eq .chezmoi.os "darwin" }}
 alias alert="afplay /System/Library/Sounds/Ping.aiff"
+{{- end }}
 alias psql="docker exec -it postgres psql -U postgres --dbname=realtime_stocks_chart"
+{{- if eq .chezmoi.os "darwin" }}
 alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
+{{- end }}
 
 # ── Misc ──────────────────────────────────────────────────────────────────────
 
