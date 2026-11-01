@@ -37,7 +37,7 @@ if OS.mac?
   tap "cirruslabs/cli"
   tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
   tap "nikitabobko/tap"
-  tap "openai/tools"
+  tap "openai/tools", trusted: true
   # Cross-platform software keyboard remapper for Linux, macOS and Windows
   brew "kanata"
   # Easiest, most secure way to use WireGuard and 2FA
