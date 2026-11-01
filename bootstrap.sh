@@ -13,17 +13,12 @@ fi
 
 dnf install -y sudo git curl
 
-if ! id "$user" >/dev/null 2>&1; then
-  useradd -m "$user"
-  # The zsh package adds this to new homes, and chezmoi would stop to ask about it
-  rm -f "/home/$user/.zshrc"
-  echo "Choose a password for $user, which sudo will ask for from now on."
-  until passwd "$user"; do :; done
-fi
-usermod -aG wheel "$user"
+useradd -m -G wheel "$user"
+echo "Choose a password for $user, which sudo will ask for from now on."
+until passwd "$user"; do :; done
 
 # Root's SSH key keeps working for the new user
-if [ -f /root/.ssh/authorized_keys ] && [ ! -e "/home/$user/.ssh/authorized_keys" ]; then
+if [ -f /root/.ssh/authorized_keys ]; then
   install -d -m 700 -o "$user" -g "$user" "/home/$user/.ssh"
   install -m 600 -o "$user" -g "$user" /root/.ssh/authorized_keys "/home/$user/.ssh/authorized_keys"
   if command -v restorecon >/dev/null; then
@@ -39,9 +34,7 @@ chmod 440 "$sudoers"
 runuser -l "$user" -c "sh -c \"\$(curl -fsLS get.chezmoi.io/lb)\" -- init --branch $branch --apply v3nne"
 
 # Prints a link to open on the Mac, and waits until it's approved
-if ! tailscale status >/dev/null 2>&1; then
-  tailscale up --ssh
-fi
+tailscale up --ssh
 
 cat <<EOF
 
