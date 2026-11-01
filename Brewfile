@@ -53,9 +53,9 @@ if OS.mac?
   # Desktop password and login vault
   cask "bitwarden"
   # Web browser focusing on privacy
-  cask "brave-browser"
+  # cask "brave-browser"
   # App to build and share containerised applications and microservices
-  cask "docker-desktop"
+  # cask "docker-desktop"
   # Terminal emulator that uses platform-native UI and GPU acceleration
   cask "ghostty"
   # Utility to extend trackpad functionality
@@ -63,5 +63,5 @@ if OS.mac?
   # Knowledge base that works on top of a local folder of plain text Markdown files
   cask "obsidian"
   # Music streaming service
-  cask "spotify"
+  # cask "spotify"
 end
