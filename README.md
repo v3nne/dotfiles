@@ -21,24 +21,15 @@ Then work through the Mac list in [CHECKLIST.md](CHECKLIST.md).
 
 ## New Fedora server
 
-Create a GitHub key for the server, with no passphrase:
+As root:
 
 ```sh
-sudo dnf install -y git curl
-ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
-cat ~/.ssh/id_ed25519.pub
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/v3nne/dotfiles/main/bootstrap.sh)"
 ```
 
-Add that key to GitHub, then:
+This creates the `venne` user and installs everything as that user. It stops twice: once at the start to choose a password for `venne`, and once at the end for a Tailscale link to open on your Mac. It's safe to run again if it fails partway.
 
-```sh
-cd ~
-sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --ssh v3nne
-~/.local/bin/chezmoi diff
-~/.local/bin/chezmoi apply
-```
-
-`apply` asks for your sudo password. Then work through the Fedora list in [CHECKLIST.md](CHECKLIST.md).
+Then work through the Fedora list in [CHECKLIST.md](CHECKLIST.md).
 
 ## Day to day
 

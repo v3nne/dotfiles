@@ -15,17 +15,10 @@ Work and AWS keys and `~/.ssh/config` stay off the server.
 
 ### Finish the install
 
-- [ ] Log out and back in, which picks up zsh and the `docker` group
-- [ ] Run `sudo tailscale up --ssh`, open the link it prints in a browser on your Mac, and approve the server
 - [ ] Check that your Mac is on the same Tailscale account, and that your tailnet's access rules allow Tailscale SSH
-- [ ] Run `claude` and log in, using the link on your Mac and pasting a code back if asked
-- [ ] Add the server to `~/.ssh/config` on the Mac:
-
-```
-Host devbox
-    HostName <the server's Tailscale name>
-    User <your server username>
-```
+- [ ] Add the `Host devbox` entry that `bootstrap.sh` prints to `~/.ssh/config` on the Mac
+- [ ] Log in as `venne`, run `claude` and log in, using the link on your Mac and pasting a code back if asked
+- [ ] To push from the server, create a key with `ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""`, add it to GitHub, and run `chezmoi git -- remote set-url origin git@github.com:v3nne/dotfiles.git`
 
 ### Check it
 
