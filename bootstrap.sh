@@ -63,6 +63,7 @@ sshd -t
 systemctl reload sshd
 
 # Published ports skip the firewall, so make them local unless given an address
+install -d /etc/docker
 echo '{ "ip": "127.0.0.1" }' >/etc/docker/daemon.json
 systemctl restart docker
 
@@ -85,5 +86,5 @@ Host devbox
     HostName $(tailscale ip -4)
     User $user
 
-Then run dev on the Mac, and claude on the server to log in.
+Then run devbox on the Mac, and claude on the server to log in.
 EOF

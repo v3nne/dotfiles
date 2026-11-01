@@ -24,6 +24,8 @@ brew "lazygit"
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
 # Official tldr client written in Rust
 brew "tlrc"
 # Terminal multiplexer

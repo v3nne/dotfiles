@@ -17,6 +17,7 @@ Work and AWS keys and `~/.ssh/config` stay off the server.
 
 - [ ] Connect the Mac to the same Tailscale account with `sudo brew services start tailscale` and `tailscale up`
 - [ ] Check that your tailnet's access rules allow Tailscale SSH
+- [ ] Disable key expiry for the server in the Tailscale admin console, because an expired key leaves only your provider's web console as a way in
 - [ ] Add the `Host devbox` entry that `bootstrap.sh` prints to `~/.ssh/config` on the Mac
 - [ ] Log in as `venne`, run `claude` and log in, using the link on your Mac and pasting a code back if asked
 - [ ] To push from the server, create a key with `ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""`, add it to GitHub, and run `chezmoi git -- remote set-url origin git@github.com:v3nne/dotfiles.git`
@@ -27,7 +28,7 @@ Work and AWS keys and `~/.ssh/config` stay off the server.
 - [ ] `nvim --version` shows 0.12.x, and `tmux -V` shows 3.8
 - [ ] `lazygit`, `lazydocker`, `tldr` and `bw` all start
 - [ ] `docker run hello-world` works without `sudo`, and `docker compose version` works
-- [ ] `dev` on the Mac reconnects to the same tmux session after you disconnect
+- [ ] `devbox` on the Mac reconnects to the same tmux session after you disconnect
 - [ ] No "unknown terminal" errors, the tmux theme stays dark, and the Alt shortcuts work
 - [ ] Neovim plugins install, and `blink.cmp` works
 - [ ] Mason installs `pyright`, `ts_ls`, `gopls` and `lua_ls`

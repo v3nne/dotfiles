@@ -40,7 +40,7 @@ Then work through the Fedora list in [CHECKLIST.md](CHECKLIST.md).
 | Preview changes | `chezmoi diff` |
 | Apply changes | `chezmoi apply` |
 | Pull and apply changes from the other machine | `dotu` |
-| Connect to the server from the Mac | `dev`, in a Ghostty window outside tmux |
+| Connect to the server from the Mac | `devbox`, in a Ghostty window outside tmux |
 | Update chezmoi | `chezmoi upgrade` |
 
 ## Packages
