@@ -12,7 +12,7 @@ Wait for that to finish, then:
 
 ```sh
 cd ~
-sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --apply <github-user>
+sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --apply v3nne
 ```
 
 Run it from your home folder, because the installer's `.local/bin` path is relative to where you run it.
@@ -33,7 +33,7 @@ Add that key to GitHub, then:
 
 ```sh
 cd ~
-sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --ssh <github-user>
+sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --ssh v3nne
 ~/.local/bin/chezmoi diff
 ~/.local/bin/chezmoi apply
 ```
