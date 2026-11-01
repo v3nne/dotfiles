@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ -x {{ template "brew-prefix" . }}/bin/brew ]; then
+  exit 0
+fi
+
+{{ if eq .chezmoi.os "linux" -}}
+# NONINTERACTIVE stops the installer asking for a password, so ask for it here
+# Not sudo -v, which still asks when bootstrap.sh has turned the password off
+sudo true
+NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+{{ else -}}
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+{{ end -}}

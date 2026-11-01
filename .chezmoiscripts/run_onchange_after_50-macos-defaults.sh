@@ -43,4 +43,11 @@ defaults write com.apple.finder ShowPathbar -bool true
 defaults write com.apple.finder ShowStatusBar -bool true
 defaults write com.apple.finder ShowRecentTags -bool false
 
+# Default apps: open audio files with QuickTime Player
+if command -v duti >/dev/null 2>&1; then
+  for ext in mp3 m4a m4b aac wav aiff aif flac; do
+    duti -s com.apple.QuickTimePlayerX ".$ext" all
+  done
+fi
+
 killall Dock Finder ControlCenter 2>/dev/null || true

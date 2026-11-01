@@ -146,14 +146,17 @@ bind-key w confirm-before -p "Kill session #S? (y/n)" "run-shell 'tmux switch-cl
 set -g status-style "bg=default,fg=default"
 set -g status-justify left
 set -g status-left ""
-set -g status-right "#S"
+set -g status-right "#S #[fg=#ecece8,bg=#516e7d]  #h "
+set -g status-right-length 60
 set -g window-status-format " #I:#W "
 set -g window-status-current-format " #I:#W "
 set -g window-status-style "bg=default,fg=default"
 set -g window-status-current-style "fg=#ecece8,bg=#54546D"
 set -g window-status-separator ""
+{{- if eq .chezmoi.os "darwin" }}
 # Keep the active-window colors aligned with Ghostty's macOS appearance.
 run-shell -b "~/.config/tmux/tmux-status-theme.sh --watch"
+{{- end }}
 
 # Active pane divider color
 set -g pane-active-border-style "fg=#E46876"
