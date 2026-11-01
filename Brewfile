@@ -37,7 +37,7 @@ if OS.mac?
   tap "cirruslabs/cli"
   tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
   tap "nikitabobko/tap"
-  tap "openai/tools", trusted: true
+  # tap "openai/tools", trusted: true
   # Cross-platform software keyboard remapper for Linux, macOS and Windows
   brew "kanata"
   # Easiest, most secure way to use WireGuard and 2FA
@@ -45,9 +45,9 @@ if OS.mac?
   # Custom macOS statusbar with shell plugin, interaction and graph support
   brew "felixkratz/formulae/sketchybar"
   # Software networking for Tart virtual machines
-  brew "openai/tools/softnet"
+  # brew "openai/tools/softnet"
   # Virtual machines on Apple Silicon
-  brew "openai/tools/tart"
+  # brew "openai/tools/tart"
   # AeroSpace is an i3-like tiling window manager for macOS
   cask "nikitabobko/tap/aerospace", trusted: true
   # Desktop password and login vault
@@ -61,7 +61,7 @@ if OS.mac?
   # Utility to extend trackpad functionality
   cask "middleclick"
   # Knowledge base that works on top of a local folder of plain text Markdown files
-  cask "obsidian"
+  # cask "obsidian"
   # Music streaming service
   # cask "spotify"
 end
