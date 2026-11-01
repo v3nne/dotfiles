@@ -31,6 +31,8 @@ trap 'rm -f "$sudoers"' EXIT
 echo "$user ALL=(ALL) NOPASSWD: ALL" >"$sudoers"
 chmod 440 "$sudoers"
 
+# The new user has no terminfo for Ghostty yet, which stops tmux from starting
+export TERM=xterm-256color
 runuser -l "$user" -c "sh -c \"\$(curl -fsLS get.chezmoi.io/lb)\" -- init --branch $branch --apply v3nne"
 
 # Prints a link to open on the Mac, and waits until it's approved
