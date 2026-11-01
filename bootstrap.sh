@@ -38,9 +38,48 @@ runuser -l "$user" -c "sh -c \"\$(curl -fsLS get.chezmoi.io/lb)\" -- init --bran
 # Prints a link to open on the Mac, and waits until it's approved
 tailscale up --ssh
 
+# Everything below locks the server down, so it only runs once Tailscale is up.
+# Close every public service, which leaves this SSH session connected
+dnf install -y firewalld dnf5-plugin-automatic
+systemctl enable --now firewalld
+zone="$(firewall-cmd --get-default-zone)"
+for service in $(firewall-cmd --zone="$zone" --list-services); do
+  if [ "$service" != dhcpv6-client ]; then
+    firewall-cmd --permanent --zone="$zone" --remove-service="$service"
+  fi
+done
+# Lets Tailscale connect directly instead of through its relays
+firewall-cmd --permanent --zone="$zone" --add-port=41641/udp
+firewall-cmd --permanent --zone=trusted --add-interface=tailscale0
+firewall-cmd --reload
+
+# 00 because sshd uses the first value it reads, and the image can add its own
+cat >/etc/ssh/sshd_config.d/00-lockdown.conf <<EOF
+PermitRootLogin no
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+EOF
+sshd -t
+systemctl reload sshd
+
+# Published ports skip the firewall, so make them local unless given an address
+echo '{ "ip": "127.0.0.1" }' >/etc/docker/daemon.json
+systemctl restart docker
+
+mkdir -p /etc/dnf/dnf5-plugins
+cat >/etc/dnf/dnf5-plugins/automatic.conf <<EOF
+[commands]
+upgrade_type = security
+apply_updates = yes
+EOF
+systemctl enable --now dnf5-automatic.timer
+
 cat <<EOF
 
-Done. Add this to ~/.ssh/config on the Mac:
+Done. Public SSH is now closed, so keep this session open until ssh devbox works.
+If you get locked out, use your provider's web console.
+
+Add this to ~/.ssh/config on the Mac:
 
 Host devbox
     HostName $(tailscale ip -4)

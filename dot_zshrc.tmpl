@@ -45,8 +45,8 @@ comp() {
 {{- if eq .chezmoi.os "darwin" }}
 
 # Login shell, because tmux is in Homebrew's folder, which plain ssh doesn't have on PATH
-dev() {
-  ssh -t devbox 'zsh -lc "tmux new-session -A -s main"'
+devbox() {
+  ssh -t devbox 'zsh -lc "tmux new-session -A -s HOME"'
 }
 {{- end }}
 
@@ -70,9 +70,6 @@ alias chp="claude --model haiku --print"
 #alias nvim="/Users/venne/Documents/nvim-macos-arm64/bin/nvim"
 {{- if eq .chezmoi.os "darwin" }}
 alias alert="afplay /System/Library/Sounds/Ping.aiff"
-{{- end }}
-alias psql="docker exec -it postgres psql -U postgres --dbname=realtime_stocks_chart"
-{{- if eq .chezmoi.os "darwin" }}
 alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
 {{- end }}
 

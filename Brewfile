@@ -38,6 +38,8 @@ if OS.mac?
   tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
   tap "nikitabobko/tap"
   # tap "openai/tools", trusted: true
+  # Select default apps for documents and URL schemes on macOS
+  brew "duti"
   # Cross-platform software keyboard remapper for Linux, macOS and Windows
   brew "kanata"
   # Easiest, most secure way to use WireGuard and 2FA

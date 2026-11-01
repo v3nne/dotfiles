@@ -27,7 +27,7 @@ On a fresh server, as root:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/v3nne/dotfiles/main/bootstrap.sh)"
 ```
 
-This creates the `venne` user and installs everything as that user. It stops twice: once at the start to choose a password for `venne`, and once at the end for a Tailscale link to open on your Mac. If it fails partway, start again on a new server.
+This creates the `venne` user, installs everything as that user, then closes the server to everything except Tailscale. It stops twice: once at the start to choose a password for `venne`, and once at the end for a Tailscale link to open on your Mac. If it fails partway, start again on a new server.
 
 Then work through the Fedora list in [CHECKLIST.md](CHECKLIST.md).
 
