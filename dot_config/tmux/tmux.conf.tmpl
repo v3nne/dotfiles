@@ -180,7 +180,7 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'sainnhe/tmux-fzf'
 TMUX_FZF_LAUNCH_KEY="F"
 set -g @tmux-fzf-launch-key 'F'
-TMUX_FZF_OPTIONS="-p -w 90% -h 90% -m --bind=ctrl-l:accept"
+TMUX_FZF_OPTIONS="-p -w 90% -h 90% -m --bind=ctrl-l:accept --bind=right:accept"
 bind-key C-space run-shell -b "~/.config/tmux/plugins/tmux-fzf/scripts/session.sh switch"
 bind-key J run-shell -b "~/.config/tmux/plugins/tmux-fzf/main.sh"
 

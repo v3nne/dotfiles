@@ -13,6 +13,9 @@ local telescope_navigation = {
   ['<down>'] = actions.move_selection_next,
   ['<up>'] = actions.move_selection_previous,
   ['<right>'] = actions.select_default,
+  ['<C-j>'] = actions.move_selection_next,
+  ['<C-k>'] = actions.move_selection_previous,
+  ['<C-l>'] = actions.select_default,
   ['<C-d>'] = actions.preview_scrolling_down,
   ['<C-u>'] = actions.preview_scrolling_up,
 }
@@ -164,6 +167,9 @@ fzf.setup {
     },
     fzf = {
       ['right'] = 'accept',
+      ['ctrl-j'] = 'down',
+      ['ctrl-k'] = 'up',
+      ['ctrl-l'] = 'accept',
     },
   },
   files = {
