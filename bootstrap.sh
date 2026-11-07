@@ -85,6 +85,7 @@ Add this to ~/.ssh/config on the Mac:
 Host devbox
     HostName $(tailscale ip -4)
     User $user
+    LocalForward 5173 localhost:5173
 
 Then run devbox on the Mac, and claude on the server to log in.
 EOF

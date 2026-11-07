@@ -42,6 +42,8 @@ if OS.mac?
   # tap "openai/tools", trusted: true
   # Select default apps for documents and URL schemes on macOS
   brew "duti"
+  # Shit talk with your buddies
+  cask "discord"
   # Cross-platform software keyboard remapper for Linux, macOS and Windows
   brew "kanata"
   # Easiest, most secure way to use WireGuard and 2FA
@@ -49,23 +51,23 @@ if OS.mac?
   # Custom macOS statusbar with shell plugin, interaction and graph support
   brew "felixkratz/formulae/sketchybar"
   # Software networking for Tart virtual machines
-  # brew "openai/tools/softnet"
+  brew "openai/tools/softnet"
   # Virtual machines on Apple Silicon
-  # brew "openai/tools/tart"
+  brew "openai/tools/tart"
   # AeroSpace is an i3-like tiling window manager for macOS
   cask "nikitabobko/tap/aerospace", trusted: true
   # Desktop password and login vault
   cask "bitwarden"
   # Web browser focusing on privacy
-  # cask "brave-browser"
+  cask "brave-browser"
   # App to build and share containerised applications and microservices
-  # cask "docker-desktop"
+  cask "docker-desktop"
   # Terminal emulator that uses platform-native UI and GPU acceleration
   cask "ghostty"
   # Utility to extend trackpad functionality
   cask "middleclick"
   # Knowledge base that works on top of a local folder of plain text Markdown files
-  # cask "obsidian"
+  cask "obsidian"
   # Music streaming service
-  # cask "spotify"
+  cask "spotify"
 end
