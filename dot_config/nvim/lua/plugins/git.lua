@@ -58,6 +58,7 @@ require('diffview').setup({
     view = {
       ['q'] = '<Cmd>DiffviewClose<CR>',
       ['<leader>e'] = '<Cmd>DiffviewToggleFiles<CR>',
+      ['<leader>l'] = diff_actions.cycle_layout,
     },
     file_panel = {
       ['q'] = '<Cmd>DiffviewClose<CR>',
