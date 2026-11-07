@@ -62,10 +62,12 @@ telescope.setup({
           ['<Left>'] = fb_actions.goto_parent_dir,
           ['<C-a>'] = fb_actions.create,
           ['<C-r>'] = fb_actions.rename,
+          ['<C-g>'] = fb_actions.toggle_respect_gitignore,
         },
         ['n'] = {
           ['<Left>'] = fb_actions.goto_parent_dir,
           ['<a>'] = fb_actions.rename,
+          ['<C-g>'] = fb_actions.toggle_respect_gitignore,
         },
       },
     },
@@ -176,7 +178,10 @@ fzf.setup {
     prompt = 'Files❯ ',
     git_icons = true,
     file_icons = true,
-    fd_opts = get_fd_opts()
+    fd_opts = get_fd_opts(),
+    actions = {
+      ['ctrl-g'] = { fn = fzf.actions.toggle_ignore, reuse = true, header = false },
+    },
   },
   grep = {
     prompt = 'Grep❯ ',

@@ -46,7 +46,7 @@ comp() {
 
 # Login shell, because tmux is in Homebrew's folder, which plain ssh doesn't have on PATH
 devbox() {
-  ssh -t devbox 'zsh -lc "tmux new-session -A -s HOME"'
+  ssh -t devbox 'zsh -lc "tmux attach || tmux new-session -s HOME"'
 }
 {{- end }}
 
