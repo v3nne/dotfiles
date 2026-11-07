@@ -2,8 +2,7 @@
 	name = venne
 	email = v3nne@proton.me
 
-# Scan staged changes for secrets in every repo. Config hooks need git 2.54+ and
-# run before the repo's own .git/hooks/pre-commit, which still runs.
+# Scan staged changes for secrets in every repo. Config hooks need git 2.54+.
 # Skip once with `git commit --no-verify`.
 [hook "gitleaks"]
 	event = pre-commit
