@@ -70,4 +70,6 @@ if OS.mac?
   cask "obsidian"
   # Music streaming service
   cask "spotify"
+  # Speach to text
+  cask "wispr-flow"
 end

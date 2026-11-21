@@ -3,7 +3,7 @@ theme = dark:kanagawa-paper-ink,light:kanagawa-paper-canvas
 
 
 font-family = JetBrainsMono Nerd Font Mono
-font-size = 15.5
+font-size = 16
 
 
 window-decoration = none
