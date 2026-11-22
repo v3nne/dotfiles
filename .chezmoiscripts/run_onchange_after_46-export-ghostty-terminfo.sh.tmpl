@@ -1,0 +1,7 @@
+#!/bin/bash
+set -euo pipefail
+
+# Re-exports Ghostty's terminfo for script 45 whenever a Ghostty update changes it.
+# ghostty terminfo hash: {{ include "/Applications/Ghostty.app/Contents/Resources/terminfo/78/xterm-ghostty" | sha256sum }}
+TERMINFO=/Applications/Ghostty.app/Contents/Resources/terminfo \
+  infocmp -x xterm-ghostty >{{ .chezmoi.sourceDir | quote }}/xterm-ghostty.terminfo

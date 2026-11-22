@@ -2,6 +2,7 @@ Brewfile
 bootstrap.sh
 README.md
 CHECKLIST.md
+xterm-ghostty.terminfo
 
 # macOS metadata
 **/._*
@@ -38,8 +39,10 @@ CHECKLIST.md
 .chezmoiscripts/05-dnf-packages.sh
 .chezmoiscripts/06-docker.sh
 .chezmoiscripts/07-tailscale.sh
+.chezmoiscripts/45-ghostty-terminfo.sh
 {{ else }}
 # Mac only
+.chezmoiscripts/46-export-ghostty-terminfo.sh
 .chezmoiscripts/50-macos-defaults.sh
 .chezmoiscripts/60-kanata-daemons.sh
 .config/aerospace

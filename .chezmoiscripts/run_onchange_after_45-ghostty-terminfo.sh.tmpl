@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+# Ghostty sends TERM=xterm-ghostty over ssh, and Fedora only ships it as "ghostty",
+# so without this tmux won't start. Refresh the source with:
+#   infocmp -x xterm-ghostty > xterm-ghostty.terminfo
+tic -x - <<'EOF'
+{{ include "xterm-ghostty.terminfo" }}
+EOF
